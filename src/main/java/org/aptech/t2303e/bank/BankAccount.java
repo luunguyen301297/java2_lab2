@@ -18,18 +18,26 @@ import java.util.Date;
  **/
 @Data
 @Builder
-@AllArgsConstructor
 public class BankAccount {
   private CardType cardType;
   private String name, cardNo, idCard, msisdn, address;
-  private LocalDate dateOfBirth;
+  private Date dateOfBirth;
   private int balance;
   public static final int MIN_BALANCE = 50000;
-  Transaction transaction;
-  BankDao bankDao;
+
+  public BankAccount(CardType cardType, String name, String cardNo, String idCard, String msisdn, String address, Date dateOfBirth, int balance) {
+    this.cardType = cardType;
+    this.name = name;
+    this.cardNo = cardNo;
+    this.idCard = idCard;
+    this.msisdn = msisdn;
+    this.address = address;
+    this.dateOfBirth = dateOfBirth;
+    this.balance += MIN_BALANCE;
+  }
 
   public void withDraw(int num){
-    transaction = Transaction.builder()
+    Transaction transaction = Transaction.builder()
       .transactionType(TransactionType.WITHDRAW.type)
       .transactionAmount(num)
       .transactionTime(new Date())
@@ -45,7 +53,7 @@ public class BankAccount {
   }
 
   public void deposit(int num) {
-    transaction = Transaction.builder()
+    Transaction transaction = Transaction.builder()
       .transactionType(TransactionType.DEPOSIT.type)
       .transactionAmount(num)
       .transactionTime(new Date())
@@ -54,6 +62,9 @@ public class BankAccount {
     System.out.println(transaction.getTransactionType() + " | ID Card : " + getIdCard());
     setBalance(getBalance() + num);
     System.out.println("Balance : " + getBalance());
+
+    BankDao bankDao = new BankDaoImpl();
+    bankDao.insertTransactionInformation(transaction, getIdCard());
   }
 
   public BankAccount() {
@@ -100,10 +111,10 @@ public class BankAccount {
     }
   }
 
-  public void setDateOfBirth(LocalDate dateOfBirth) {
-    LocalDate dayNow = LocalDate.now();
+  public void setDateOfBirth(Date dateOfBirth) {
+    Date dayNow = new Date();
     try {
-      if (dateOfBirth.isBefore(dayNow) && dateOfBirth.getYear() > 1800) {
+      if (dateOfBirth.toInstant().isBefore(dayNow.toInstant()) && dateOfBirth.getYear() > 1800) {
         this.dateOfBirth = dateOfBirth;
       } else {
         System.err.println("Are you using a time machine ?");

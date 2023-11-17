@@ -5,7 +5,7 @@
   <modelVersion>4.0.0</modelVersion>
 
   <groupId>org.aptech.t2303e</groupId>
-  <artifactId>Bank</artifactId>
+  <artifactId>lab2_bank</artifactId>
   <version>1.0-SNAPSHOT</version>
 
   <properties>

@@ -16,25 +16,18 @@ import java.util.Date;
 public class Main {
   public static void main(String[] args) {
     BankDao bankDao = new BankDaoImpl();
+    Transaction transaction = new Transaction();
 
-    BankAccount account = BankAccount.builder()
-      .cardType(CardType.VISA)
-      .name("A")
-      .cardNo("11231231231")
-      .idCard("533535354")
-      .msisdn("6464647373")
-      .address("asdfggf")
-      .dateOfBirth(LocalDate.parse("1997-11-11"))
-      .build();
-    account.deposit(100000);
+//    BankAccount account = BankAccount.builder()
+//      .cardType(CardType.VISA)
+//      .name("B")
+//      .cardNo("11231231231")
+//      .idCard("3dsf2323")
+//      .msisdn("6464647373")
+//      .address("asdfggf")
+//      .dateOfBirth(new Date())
+//      .build();
 
-    Transaction transaction = Transaction.builder()
-      .transactionType(TransactionType.DEPOSIT.type)
-      .transactionAmount(account.getBalance())
-      .transactionTime(new Date())
-      .build();
-
-    bankDao.insertTransactionInformation(transaction);
-    bankDao.getTransactionInformation(account.getIdCard());
+    bankDao.getTransactionInformation(transaction,"533535354");
   }
 }

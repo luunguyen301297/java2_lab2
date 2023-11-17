@@ -6,11 +6,10 @@ import org.aptech.t2303e.bank.do_not_know_how_to_name_it_properly.service.UserSe
 import org.aptech.t2303e.bank.consts.CardType;
 
 import java.io.*;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.time.LocalDate;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Objects;
-import java.util.Scanner;
+import java.util.*;
 
 /**
  * @author : ad
@@ -104,15 +103,19 @@ public class UserServiceImpl implements UserService {
       return null;
     String[] chars = line.split("\\|");
 
-    return BankAccount.builder()
-      .cardType(CardType.valueOf((chars[1])))
-      .name(String.valueOf(chars[2]))
-      .cardNo(String.valueOf(chars[3]))
-      .idCard(String.valueOf(chars[4]))
-      .msisdn(String.valueOf(chars[5]))
-      .address(String.valueOf(chars[6]))
-      .dateOfBirth(LocalDate.parse(chars[7]))
-      .balance(Integer.parseInt(chars[8]))
-      .build();
+    try {
+      return BankAccount.builder()
+        .cardType(CardType.valueOf((chars[1])))
+        .name(String.valueOf(chars[2]))
+        .cardNo(String.valueOf(chars[3]))
+        .idCard(String.valueOf(chars[4]))
+        .msisdn(String.valueOf(chars[5]))
+        .address(String.valueOf(chars[6]))
+        .dateOfBirth(new SimpleDateFormat("dd/MM/yyyy").parse(chars[7]))
+        .balance(Integer.parseInt(chars[8]))
+        .build();
+    } catch (ParseException e) {
+      throw new RuntimeException(e);
+    }
   }
 }

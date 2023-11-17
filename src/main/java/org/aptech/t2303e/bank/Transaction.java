@@ -3,7 +3,6 @@ package org.aptech.t2303e.bank;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
-import org.aptech.t2303e.bank.consts.TransactionType;
 
 import java.util.Date;
 
