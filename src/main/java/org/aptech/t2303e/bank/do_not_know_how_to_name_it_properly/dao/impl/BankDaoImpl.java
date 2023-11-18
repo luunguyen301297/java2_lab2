@@ -6,6 +6,8 @@ import org.aptech.t2303e.bank.do_not_know_how_to_name_it_properly.dao.BankDao;
 import org.aptech.t2303e.config.properties.Datasource;
 
 import java.sql.*;
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  * @author : ad
@@ -34,7 +36,9 @@ public class BankDaoImpl implements BankDao {
       System.out.println(sql);
       preSt.execute();
     } catch (SQLException e) {
-      throw new RuntimeException(e);
+      System.err.println("user with ID CARD = \"" + bankAccount.getIdCard() + "\" already exists !");
+    } catch (Exception e) {
+      throw new RuntimeException();
     }
     return false;
   }
@@ -63,11 +67,12 @@ public class BankDaoImpl implements BankDao {
   }
 
   @Override
-  public void getTransactionInformation(Transaction transaction, String idCard) {
+  public List<Transaction> getTransactionInformation(Transaction transaction, String idCard) {
     PreparedStatement preSt;
     Connection conn = Datasource.getConn();
     String sql = "Select * from transaction_info where idCard = ?";
 
+    List<Transaction> transactionList = new ArrayList<>();
     try {
       preSt = conn.prepareStatement(sql);
       preSt.setString(1, idCard);
@@ -75,8 +80,10 @@ public class BankDaoImpl implements BankDao {
 
       while (resultSet.next()) {
         transaction = transactionRowMapper(resultSet);
+        transactionList.add(transaction);
       }
-      System.out.println(transaction);
+      System.out.println(transactionList);
+      return transactionList;
     } catch (SQLException e) {
       throw new RuntimeException(e);
     }

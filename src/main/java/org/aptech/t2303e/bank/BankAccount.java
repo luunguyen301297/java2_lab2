@@ -18,23 +18,13 @@ import java.util.Date;
  **/
 @Data
 @Builder
+@AllArgsConstructor
 public class BankAccount {
   private CardType cardType;
   private String name, cardNo, idCard, msisdn, address;
   private Date dateOfBirth;
   private int balance;
   public static final int MIN_BALANCE = 50000;
-
-  public BankAccount(CardType cardType, String name, String cardNo, String idCard, String msisdn, String address, Date dateOfBirth, int balance) {
-    this.cardType = cardType;
-    this.name = name;
-    this.cardNo = cardNo;
-    this.idCard = idCard;
-    this.msisdn = msisdn;
-    this.address = address;
-    this.dateOfBirth = dateOfBirth;
-    this.balance += MIN_BALANCE;
-  }
 
   public void withDraw(int num){
     Transaction transaction = Transaction.builder()

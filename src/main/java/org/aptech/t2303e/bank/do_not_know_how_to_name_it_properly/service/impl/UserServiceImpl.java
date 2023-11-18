@@ -8,7 +8,6 @@ import org.aptech.t2303e.bank.consts.CardType;
 import java.io.*;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
-import java.time.LocalDate;
 import java.util.*;
 
 /**
@@ -69,7 +68,7 @@ public class UserServiceImpl implements UserService {
   public void readFile() {
     List<BankAccount> accountList = new ArrayList<>();
     String path = "./etc/bank_account.txt";
-    String header = "ID|CARDTYPE|NAME|CARDNO|IDCARD|MSISDN|ADDRESS|DATEOFBIRTH|BALANCE";
+    String header = "ID|CARDTYPE|NAME|CARDNO|IDCARD|MSISDN|ADDRESS|DATEOFBIRTH";
     FileInputStream inputStream = null;
     Scanner scanner;
 
@@ -112,10 +111,15 @@ public class UserServiceImpl implements UserService {
         .msisdn(String.valueOf(chars[5]))
         .address(String.valueOf(chars[6]))
         .dateOfBirth(new SimpleDateFormat("dd/MM/yyyy").parse(chars[7]))
-        .balance(Integer.parseInt(chars[8]))
         .build();
     } catch (ParseException e) {
       throw new RuntimeException(e);
     }
+  }
+
+  public static void main(String[] args) {
+    UserService userService = new UserServiceImpl();
+
+    userService.readFile();
   }
 }
